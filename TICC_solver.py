@@ -3,6 +3,7 @@ import math, time, collections, os, errno, sys, code, random
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+
 from sklearn import mixture
 from sklearn.cluster import KMeans
 import pandas as pd
@@ -16,7 +17,7 @@ from src.admm_solver import ADMMSolver
 class TICC:
     def __init__(self, window_size=10, number_of_clusters=5, lambda_parameter=11e-2,
                  beta=400, maxIters=1000, threshold=2e-5, write_out_file=False,
-                 prefix_string="", num_proc=1, compute_BIC=False, cluster_reassignment=20):
+                 prefix_string="", num_proc=1, compute_BIC=True, cluster_reassignment=20):
         """
         Parameters:
             - window_size: size of the sliding window
@@ -43,6 +44,7 @@ class TICC:
         self.num_blocks = self.window_size + 1
         pd.set_option('display.max_columns', 500)
         np.set_printoptions(formatter={'float': lambda x: "{0:0.4f}".format(x)})
+        print("maybe this")
         np.random.seed(102)
 
     def fit(self, input_file):
@@ -70,16 +72,22 @@ class TICC:
         complete_D_train = self.stack_training_data(times_series_arr, time_series_col_size, num_train_points,
                                                     training_indices)
 
+        print("here")
         # Initialization
         # Gaussian Mixture
         gmm = mixture.GaussianMixture(n_components=self.number_of_clusters, covariance_type="full")
+        print("here maybe")
         gmm.fit(complete_D_train)
+        print("here past gmmfit")
         clustered_points = gmm.predict(complete_D_train)
         gmm_clustered_pts = clustered_points + 0
         # K-means
+        print("here at kmeans")
         kmeans = KMeans(n_clusters=self.number_of_clusters, random_state=0).fit(complete_D_train)
         clustered_points_kmeans = kmeans.labels_  # todo, is there a difference between these two?
         kmeans_clustered_pts = kmeans.labels_
+
+        print("here again")
 
         train_cluster_inverse = {}
         log_det_values = {}  # log dets of the thetas
@@ -208,6 +216,7 @@ class TICC:
         if self.compute_BIC:
             bic = computeBIC(self.number_of_clusters, time_series_rows_size, clustered_points, train_cluster_inverse,
                              empirical_covariances)
+            print("this is the val,",  bic)
             return clustered_points, train_cluster_inverse, bic
 
         return clustered_points, train_cluster_inverse
@@ -215,7 +224,7 @@ class TICC:
     def compute_f_score(self, matching_EM, matching_GMM, matching_Kmeans, train_confusion_matrix_EM,
                         train_confusion_matrix_GMM, train_confusion_matrix_kmeans):
         f1_EM_tr = -1  # computeF1_macro(train_confusion_matrix_EM,matching_EM,num_clusters)
-        f1_GMM_tr = -1  # computeF1_macro(train_confusion_matrix_GMM,matching_GMM,num_clusters)
+        f1_GMM_tr = -1  # computeF1_macro(train_confusion_matrix_GMM,matching_GMM,num_clusters) 
         f1_kmeans_tr = -1  # computeF1_macro(train_confusion_matrix_kmeans,matching_Kmeans,num_clusters)
         print("\n\n")
         print("TRAINING F1 score:", f1_EM_tr, f1_GMM_tr, f1_kmeans_tr)
@@ -230,6 +239,11 @@ class TICC:
             correct_e_m += train_confusion_matrix_EM[cluster, matched_cluster__e_m]
             correct_g_m_m += train_confusion_matrix_GMM[cluster, matched_cluster__g_m_m]
             correct_k_means += train_confusion_matrix_kmeans[cluster, matched_cluster__k_means]
+
+
+        print(correct_e_m)
+        print(correct_g_m_m)
+        print(correct_k_means)
 
     def compute_matches(self, train_confusion_matrix_EM, train_confusion_matrix_GMM, train_confusion_matrix_kmeans):
         matching_Kmeans = find_matching(train_confusion_matrix_kmeans)
@@ -292,7 +306,13 @@ class TICC:
         for cluster in range(self.number_of_clusters):
             if optRes[cluster] == None:
                 continue
-            val = optRes[cluster].get()
+            print("are we going")
+
+            try:
+                val = optRes[cluster].get()
+            except np.linalg.linalg.LinAlgError:
+                continue
+
             print("OPTIMIZATION for Cluster #", cluster, "DONE!!!")
             # THIS IS THE SOLUTION
             S_est = upperToFull(val, 0)
@@ -328,7 +348,7 @@ class TICC:
                 ##Fit a model - OPTIMIZATION
                 probSize = self.window_size * size_blocks
                 lamb = np.zeros((probSize, probSize)) + self.lambda_parameter
-                S = np.cov(np.transpose(D_train))
+                S = np.cov(np.transpose(D_train))       
                 empirical_covariances[cluster] = S
 
                 rho = 1
@@ -369,6 +389,7 @@ class TICC:
         print("switch_penalty", self.switch_penalty)
         print("num_cluster", self.number_of_clusters)
         print("num stacked", self.window_size)
+        print("what's this")
 
     def predict_clusters(self, test_data = None):
         '''
