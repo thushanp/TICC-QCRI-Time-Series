@@ -3,11 +3,12 @@ import numpy as np
 import sys
 
 if __name__ == '__main__':
-	fname = "Syn_TimeSeries_Plot.csv"
+	fname = "Week4_Mixed4_Freq_Wave_Final_Univariate.csv"
 	biclist = []
 
 	print("what")
 	for numclust in range(3, 10, 1):
+		print(fname)
 		print("hm")
 		for lambvals in np.linspace(5e-2, 9e-2, 4):
 			print("lambs")
@@ -27,7 +28,7 @@ if __name__ == '__main__':
 					print(tup)
 
 				except:
-					print(tup)
+					print("fail!!!")
 
 	# ticc = TICC(window_size=1, number_of_clusters=8, lambda_parameter=11e-2, beta=600, maxIters=100, threshold=2e-5,
 	#         write_out_file=False, prefix_string="output_folder/", num_proc=1)
