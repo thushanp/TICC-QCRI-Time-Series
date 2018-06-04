@@ -14,6 +14,7 @@ from src.admm_solver import ADMMSolver
 
 
 
+
 class TICC:
     def __init__(self, window_size=10, number_of_clusters=5, lambda_parameter=11e-2,
                  beta=400, maxIters=1000, threshold=2e-5, write_out_file=False,
@@ -317,7 +318,13 @@ class TICC:
             # THIS IS THE SOLUTION
             S_est = upperToFull(val, 0)
             X2 = S_est
-            u, _ = np.linalg.eig(S_est)
+
+            try:
+                u, _ = np.linalg.eig(S_est)
+            except np.linalg.linalg.LinAlgError:
+                print("skipping datapoint, has infs/nans")
+                continue
+
             cov_out = np.linalg.inv(X2)
 
             # Store the log-det, covariance, inverse-covariance, cluster means, stacked means
