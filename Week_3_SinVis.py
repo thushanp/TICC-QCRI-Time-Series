@@ -60,3 +60,7 @@ if __name__ == '__main__':
     
                 
             
+
+# lambda 0.01
+# beta 0
+# window size 3

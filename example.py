@@ -10,14 +10,14 @@ if __name__ == '__main__':
 
 	
 	numclust = 4
-	lambvals = 5e-2
-	betavals = 100
+	lambvals = 1e-2
+	betavals = 0
 
 	# maxiters 1k
 	# window size 1
 
 	try:
-		ticc = TICC(window_size=1, number_of_clusters=numclust, lambda_parameter=lambvals, beta=betavals, maxIters=1000, threshold=2e-5, 
+		ticc = TICC(window_size=3, number_of_clusters=numclust, lambda_parameter=lambvals, beta=betavals, maxIters=1000, threshold=2e-5, 
 			write_out_file=False, prefix_string="output_folder/", num_proc=1)
 
 		(cluster_assignment, cluster_MRFs, bic) = ticc.fit(input_file=fname)
@@ -82,3 +82,9 @@ if __name__ == '__main__':
 # BIC Value univariate data: [(4, 0.05, 100, 211.81665000017404)]
 # 1st freq data [(4, 0.05, 100, 219.52430593534794)]
 # 2nd freq data [(4, 0.05, 100, 187.91306822155377)]
+
+
+# new params 04 june 18:
+# lambda 0.01
+# beta 0
+# window size 3
