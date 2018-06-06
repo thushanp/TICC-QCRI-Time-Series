@@ -1,5 +1,7 @@
-mydict = dict()
-mydict[5] = None
-lst = [mydict]*5
+import numpy as np
+import matplotlib.pyplot as plt
 
-lst[3].get()
+t = np.arange(-1, 2, .01)
+s = np.sin(2*np.pi*t)
+
+plt.plot(t, s)

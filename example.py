@@ -3,21 +3,21 @@ import numpy as np
 import sys
 
 if __name__ == '__main__':
-	fname = "Week4_Mixed[4]_Freq_Wave_Final_Frequency2.csv"
+	fname = "Week4_Mixed[4]_Freq_Wave_Final_Frequency1.csv"
 	biclist = []
 
 
 
 	
-	numclust = 4
+	numclust = 5
 	lambvals = 1e-2
-	betavals = 0
+	betavals = 150
 
 	# maxiters 1k
 	# window size 1
 
 	try:
-		ticc = TICC(window_size=3, number_of_clusters=numclust, lambda_parameter=lambvals, beta=betavals, maxIters=1000, threshold=2e-5, 
+		ticc = TICC(window_size=1, number_of_clusters=numclust, lambda_parameter=lambvals, beta=betavals, maxIters=1000, threshold=2e-5, 
 			write_out_file=False, prefix_string="output_folder/", num_proc=1)
 
 		(cluster_assignment, cluster_MRFs, bic) = ticc.fit(input_file=fname)
@@ -37,25 +37,24 @@ if __name__ == '__main__':
 	# for numclust in range(3, 10, 1):
 	# 	print(fname)
 	# 	print("hm")
-	# 	for lambvals in np.linspace(5e-2, 9e-2, 4):
-	# 		print("lambs")
-	# 		for betavals in range(100, 500, 100):
-				
-	# 			try:
-	# 				ticc = TICC(window_size=1, number_of_clusters=numclust, lambda_parameter=lambvals, beta=betavals, maxIters=100, threshold=2e-5,
-	# 	       		write_out_file=False, prefix_string="output_folder/", num_proc=1)
+	# 	# for lambvals in np.linspace(5e-2, 9e-2, 4):
+	# 	# 	print("lambs")
+	# 	for betavals in range(0, 300, 50):
+	# 		try:
+	# 			ticc = TICC(window_size=1, number_of_clusters=numclust, lambda_parameter=lambvals, beta=betavals, maxIters=100, threshold=2e-5,
+	#        		write_out_file=False, prefix_string="output_folder/", num_proc=1)
 
-	# 				(cluster_assignment, cluster_MRFs, bic) = ticc.fit(input_file=fname)
-	# 				print("what?")
+	# 			(cluster_assignment, cluster_MRFs, bic) = ticc.fit(input_file=fname)
+	# 			print("what?")
 
-	# 				tup = (numclust, lambvals, betavals, bic)
+	# 			tup = (numclust, lambvals, betavals, bic)
 
-	# 				biclist.append(tup)
+	# 			biclist.append(tup)
 
-	# 				print(tup)
+	# 			print(tup)
 
-	# 			except:
-	# 				print("fail!!!")
+	# 		except:
+	# 			print("fail!!!")
 
 	# ticc = TICC(window_size=1, number_of_clusters=8, lambda_parameter=11e-2, beta=600, maxIters=100, threshold=2e-5,
 	#         write_out_file=False, prefix_string="output_folder/", num_proc=1)
@@ -63,10 +62,10 @@ if __name__ == '__main__':
 
 	np.savetxt('Results.txt', cluster_assignment, fmt='%d', delimiter=',')
 
-	try:
-		print(biclist)
-	except:
-		print(tup)
+	# try:
+	# 	print(biclist)
+	# except:
+	# 	print(tup)
 	# np.savetxt('Results2.txt', biclist)
 
 # 7871.73326102 for 8 clusters, 600 beta, lambda param 11e-2, window size 1

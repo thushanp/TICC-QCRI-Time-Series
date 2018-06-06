@@ -13,7 +13,7 @@ import csv
 window_size = 1
 number_of_clusters= 4
 lambda_parameter=0.05
-beta=100
+beta=100    
 maxIters=1000
 
 

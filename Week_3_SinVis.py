@@ -10,21 +10,20 @@ import pandas as pd
 from matplotlib import pyplot
 import random
 import numpy as np
-from itertools import cycle
+# from itertools import cycle
 
 if __name__ == '__main__':
-    cycol = cycle('bgrcmk')
+    # cycol = cycle('bgrcmk')
     
-        
-    df = pd.read_csv('Week3_Mixed_Freq_Wave_df[Cluster=3, Lambda=0.09, Beta = 0].csv', sep=',')
+    df = pd.read_csv('freq1clustdata.csv', sep=',')
     #print(df)
-    x = df.iloc[:,2]
+    # x = df.iloc[:,2]
     y = df.iloc[:,1]
     s1 = np.size(y)
     print(s1)
     #print(x)
     #print(y)
-    pyplot.plot(x)
+    pyplot.plot(y)
     #p = plt.axvspan(0, 360, facecolor='g', alpha=0.5)
     #q = plt.axvspan(360, 720, facecolor='b', alpha=0.5)
     #r = plt.axvspan(720, 1000, facecolor='y', alpha=0.5)       
@@ -40,7 +39,7 @@ if __name__ == '__main__':
     l = 0
     c = ['b','g','r','g']
     #print(y[0])
-    pyplot.plot(x,c='w')
+    pyplot.plot(y,c='w')
     for i in range(1,1001):
         if(y[i-1] == y[i]):
              end_p=i+1

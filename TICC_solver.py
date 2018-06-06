@@ -103,6 +103,7 @@ class TICC:
         pool = Pool(processes=self.num_proc)  # multi-threading
         for iters in range(self.maxIters):
             print("\n\n\nITERATION ###", iters)
+
             # Get the train and test points
             train_clusters_arr = collections.defaultdict(list)  # {cluster: [point indices]}
             for point, cluster_num in enumerate(clustered_points):
@@ -218,6 +219,9 @@ class TICC:
             bic = computeBIC(self.number_of_clusters, time_series_rows_size, clustered_points, train_cluster_inverse,
                              empirical_covariances)
             print("this is the val,",  bic)
+            if iters > 998:
+                bic = 999999999
+                return clustered_points, train_cluster_inverse, bic
             return clustered_points, train_cluster_inverse, bic
 
         return clustered_points, train_cluster_inverse
