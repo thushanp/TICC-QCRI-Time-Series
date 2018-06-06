@@ -9,15 +9,15 @@ if __name__ == '__main__':
 
 
 	
-	numclust = 5
-	lambvals = 1e-2
-	betavals = 150
+	numclust = 4
+	lambvals = 3e-2
+	betavals = 75
 
 	# maxiters 1k
 	# window size 1
 
 	try:
-		ticc = TICC(window_size=1, number_of_clusters=numclust, lambda_parameter=lambvals, beta=betavals, maxIters=1000, threshold=2e-5, 
+		ticc = TICC(window_size=1, number_of_clusters=numclust, lambda_parameter=lambvals, beta=betavals, maxIters=100, threshold=2e-5, 
 			write_out_file=False, prefix_string="output_folder/", num_proc=1)
 
 		(cluster_assignment, cluster_MRFs, bic) = ticc.fit(input_file=fname)
@@ -60,7 +60,7 @@ if __name__ == '__main__':
 	#         write_out_file=False, prefix_string="output_folder/", num_proc=1)
 	# (cluster_assignment, cluster_MRFs, bic) = ticc.fit(input_file=fname)
 
-	np.savetxt('Results.txt', cluster_assignment, fmt='%d', delimiter=',')
+	np.savetxt('Results2.txt', cluster_assignment, fmt='%d', delimiter=',')
 
 	# try:
 	# 	print(biclist)
