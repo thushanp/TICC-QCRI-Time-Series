@@ -3,15 +3,15 @@ import numpy as np
 import sys
 
 if __name__ == '__main__':
-	fname = "Week4_Mixed[4]_Freq_Wave_Final_Frequency1.csv"
+	fname = "twistdata.csv"
 	biclist = []
 
+# AABCACB
 
 
-	
-	numclust = 4
+	numclust = 3
 	lambvals = 3e-2
-	betavals = 75
+	betavals = 300
 
 	# maxiters 1k
 	# window size 1
