@@ -3,33 +3,32 @@ import numpy as np
 import sys
 
 if __name__ == '__main__':
-	fname = "twistdata.csv"
+	fname = "Series1-_30s_2121.csv"
 	biclist = []
 
 # AABCACB
 
 
-	numclust = 3
-	lambvals = 3e-2
-	betavals = 300
+	numclust = 2
+	lambvals = 1e-2
 
 	# maxiters 1k
 	# window size 1
+	for betavals in range(0, 6000, 50):
+		try:
+			ticc = TICC(window_size=1, number_of_clusters=numclust, lambda_parameter=lambvals, beta=betavals, maxIters=10, threshold=2e-5, 
+				write_out_file=False, prefix_string="output_folder/", num_proc=1)
 
-	try:
-		ticc = TICC(window_size=1, number_of_clusters=numclust, lambda_parameter=lambvals, beta=betavals, maxIters=100, threshold=2e-5, 
-			write_out_file=False, prefix_string="output_folder/", num_proc=1)
+			(cluster_assignment, cluster_MRFs, bic) = ticc.fit(input_file=fname)
+			print("what?")
 
-		(cluster_assignment, cluster_MRFs, bic) = ticc.fit(input_file=fname)
-		print("what?")
+			tup = (numclust, lambvals, betavals, bic)
 
-		tup = (numclust, lambvals, betavals, bic)
+			biclist.append(tup)
 
-		biclist.append(tup)
-
-	except: 
-		tup = "Fail"
-		print(tup)
+		except: 
+			tup = "Fail"
+			print(tup)
 
 
 
@@ -60,13 +59,13 @@ if __name__ == '__main__':
 	#         write_out_file=False, prefix_string="output_folder/", num_proc=1)
 	# (cluster_assignment, cluster_MRFs, bic) = ticc.fit(input_file=fname)
 
-	np.savetxt('Results2.txt', cluster_assignment, fmt='%d', delimiter=',')
+	# np.savetxt('Results2.txt', cluster_assignment, fmt='%d', delimiter=',')
 
 	# try:
 	# 	print(biclist)
 	# except:
 	# 	print(tup)
-	# np.savetxt('Results2.txt', biclist)
+	np.savetxt('Results2.txt', biclist)
 
 # 7871.73326102 for 8 clusters, 600 beta, lambda param 11e-2, window size 1
 # 8029.04661779 for 8 clusters, 400 beta, lambda param 11e-2, window size 1
